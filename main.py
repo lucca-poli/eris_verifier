@@ -79,15 +79,30 @@ def main(public_filepath: str, private_filepath: str):
     print(f'Starting audition on block listed in {private_filepath}')
     print(f'Reference file: {public_filepath}')
 
+    if (len(chat_content) == 0):
+        print("No blocks in private file, returning.")
+        return
+
+    initial_counter = chat_content[0]['counter']
+
     for private_block in chat_content:
         counter = private_block['counter']
         public_block = hashchain[counter-1]
         generated_hash = generate_auditable_hash(public_block, private_block)
 
+        if (len(chat_content) > counter-initial_counter+1):
+            next_previous_hash = hashchain[counter]["previousHash"]
+            if (generated_hash != next_previous_hash):
+                print('New hash does not match previousHash from next block.')
+                print(f'Generated hash: {generated_hash}')
+                print(f'Next block previous hash: {hashchain[counter]["previousHash"]}')
+                return
+
         if (generated_hash != public_block['hash']):
-            print(f'Private Block {private_block} hash did not match the one from Public Block {public_block}')
+            print('Private Block hash did not match the one from Public Block.')
             print(f'Public Block hash: {public_block["hash"]}')
             print(f'Private Block hash: {generated_hash}')
+            return
 
     print("Audition completed.")
 
