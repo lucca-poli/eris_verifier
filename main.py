@@ -83,6 +83,13 @@ def verify_private_blocks(public_blocks: List[AuditableBlock], private_blocks: L
         commited_message = generate_commited_message(private_block)
         generated_hash = generate_auditable_hash(public_block, commited_message)
 
+        if (generated_hash != public_block['hash']):
+            print('Private Block hash did not match the one from Public Block.')
+            print(f'Public Block hash: {public_block["hash"]}')
+            print(f'Private Block hash: {generated_hash}')
+            assert (generated_hash == public_block['hash'])
+            return
+
         if (len(private_blocks) > counter-initial_counter+1):
             next_previous_hash = public_blocks[counter]["previousHash"]
             if (generated_hash != next_previous_hash):
@@ -91,13 +98,6 @@ def verify_private_blocks(public_blocks: List[AuditableBlock], private_blocks: L
                 print(f'Next block previous hash: {public_blocks[counter]["previousHash"]}')
                 assert (generated_hash == next_previous_hash)
                 return
-
-        if (generated_hash != public_block['hash']):
-            print('Private Block hash did not match the one from Public Block.')
-            print(f'Public Block hash: {public_block["hash"]}')
-            print(f'Private Block hash: {generated_hash}')
-            assert (generated_hash == public_block['hash'])
-            return
 
 def verify_public_blocks(public_blocks: List[AuditableBlock]):
     if (len(public_blocks) == 0):
@@ -109,6 +109,13 @@ def verify_public_blocks(public_blocks: List[AuditableBlock]):
         public_block = public_blocks[counter-1]
         generated_hash = generate_auditable_hash(public_block, public_block['commitedMessage'])
 
+        if (generated_hash != public_block['hash']):
+            print('Public Block hash did not match the one from Public Block.')
+            print(f'Public Block hash: {public_block["hash"]}')
+            print(f'Public Block hash: {generated_hash}')
+            assert (generated_hash == public_block['hash'])
+            return
+
         if (len(public_blocks) > counter):
             next_previous_hash = public_blocks[counter]["previousHash"]
             if (generated_hash != next_previous_hash):
@@ -118,25 +125,19 @@ def verify_public_blocks(public_blocks: List[AuditableBlock]):
                 assert (generated_hash == next_previous_hash)
                 return
 
-        if (generated_hash != public_block['hash']):
-            print('Public Block hash did not match the one from Public Block.')
-            print(f'Public Block hash: {public_block["hash"]}')
-            print(f'Public Block hash: {generated_hash}')
-            assert (generated_hash == public_block['hash'])
-            return
-
 
 def main(public_filepath: str, private_filepath: str):
+    print(f'Starting audition on public blocks.')
+    print(f'Reference file: {public_filepath}')
+
     public_content = file_reader(public_filepath)
-    initial_block: AuditableBlock = public_content['initialBlock']
-    public_blocks: List[AuditableBlock] = public_content['logMessages']
+    all_public_blocks: List[AuditableBlock] = public_content
+    initial_block: AuditableBlock = all_public_blocks[0]
+    public_blocks: List[AuditableBlock] = all_public_blocks[1:]
 
     private_content = file_reader(private_filepath)
     initial_commited_key: str = private_content['initialCommitedKey']
     private_blocks: List[PrivateBlock] = private_content['logMessages']
-
-    print(f'Starting audition on public blocks.')
-    print(f'Reference file: {public_filepath}')
 
     verify_public_blocks(public_blocks)
 
