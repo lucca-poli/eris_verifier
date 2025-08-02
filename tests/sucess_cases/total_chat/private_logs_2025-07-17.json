@@ -1,1 +1,17 @@
-{"initialCommitedKey":"2bcfbe3b703e02292bfc91e765d0cd839f705379f6818de3fe4bd537a4910a9c","logMessages":[{"content":"teste1","author":"5513991772783@c.us","commitedKey":"cf1fab7d72657132998985bd681883b42f048f8f0af993b3de0ed8b02ae57b12","counter":1},{"content":"teste2","author":"5513991174080@c.us","commitedKey":"05515eef7ffc4f4aac6a17fc2ce91bead206a3b4da5b8da01a0a27dd3d5087f0","counter":2}]}
+{
+    "initialCommitedKey": "2bcfbe3b703e02292bfc91e765d0cd839f705379f6818de3fe4bd537a4910a9c",
+    "logMessages": [
+        {
+            "content": "teste1",
+            "author": "5513991772783@c.us",
+            "commitedKey": "cf1fab7d72657132998985bd681883b42f048f8f0af993b3de0ed8b02ae57b12",
+            "counter": 1
+        },
+        {
+            "content": "teste2",
+            "author": "5513991174080@c.us",
+            "commitedKey": "05515eef7ffc4f4aac6a17fc2ce91bead206a3b4da5b8da01a0a27dd3d5087f0",
+            "counter": 2
+        }
+    ]
+}
